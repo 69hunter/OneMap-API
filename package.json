@@ -1,0 +1,20 @@
+{
+  "name": "http_request",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node request.js"
+  },
+  "author": "hunter.tan",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "get-json": "^1.0.0",
+    "http": "0.0.0",
+    "json2csv": "^3.11.5",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  }
+}
