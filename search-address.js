@@ -1,7 +1,7 @@
 const request = require('request');
 const fs = require('fs');
 const json2csv = require('json2csv');
-const SearchVal = require('./SearchVal');
+const SearchVal = require('./search-list');
 
 function sendReq(SearchText){
   return new Promise((resolve, reject) => {
