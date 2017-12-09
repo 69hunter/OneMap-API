@@ -1,7 +1,8 @@
 const request = require('request');
 const fs = require('fs');
 const json2csv = require('json2csv');
-const SearchVal = require('./search-list');
+// const SearchVal = require('./files/primary-school-search-list');
+const SearchVal = require('./files/hdb-search-list');
 
 function sendReq(SearchText){
   return new Promise((resolve, reject) => {
@@ -25,6 +26,15 @@ function sendReq(SearchText){
   });
 };
 
+async function multiReq(SearchVal) {
+  let respJSON = [];
+  for (let item of SearchVal) {
+    respJSON.push(await sendReq(item));
+    console.log('status:' + respJSON.length + '/' + SearchVal.length);
+  }
+  return respJSON;
+};
+
 function writeToFile(respJSON){
   let fields = [
     'SEARCHVAL',
@@ -40,20 +50,22 @@ function writeToFile(respJSON){
     'LONGTITUDE'];
   let address = respJSON;
   let csv = json2csv({ data: address, fields: fields });
+  let jsonContent = JSON.stringify(respJSON);
 
-  fs.writeFile(`./files/primary school ${Date.now()}.csv`, csv, (err) => {
+  fs.writeFile(`./files/address info ${Date.now()}.csv`, csv, (err) => {
     if (err) throw err;
     console.log('file saved!');
   });
-};
 
-async function multiReq(SearchVal){
-  let respJSON = [];
-  for (let item of SearchVal){
-    respJSON.push(await sendReq(item));
-    console.log('status:' + respJSON.length + '/' + SearchVal.length);
-  }
-  return respJSON;
+  fs.writeFile(`./files/address info ${Date.now()}.json`, jsonContent, 'utf8', (err) => {
+    if (err) {
+      console.log("An error occured while writing JSON Object to File.");
+      return console.log(err);
+    }
+
+    console.log("JSON file has been saved.");
+  });
+
 };
 
 multiReq(SearchVal).then((respJSON)=> writeToFile(respJSON));
